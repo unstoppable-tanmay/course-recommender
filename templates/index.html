@@ -25,11 +25,8 @@
                         <h5 class="card-title">Find Course Recommendations</h5>
                         <form id="recommendation-form" class="mb-4">
                             <div class="mb-3">
-                                <label for="course-select" class="form-label">Select a course</label>
-                                <select class="form-select" id="course-select" required>
-                                    <option value="" selected disabled>Choose a course</option>
-                                    <!-- Options will be populated by JavaScript -->
-                                </select>
+                                <label for="course-input" class="form-label">Enter a course name</label>
+                                <input type="text" class="form-control" id="course-input" required placeholder="Enter course name">
                             </div>
                             <button type="submit" class="btn btn-primary">Get Recommendations</button>
                         </form>

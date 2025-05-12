@@ -2,7 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     // Elements
-    const courseSelect = document.getElementById('course-select');
+    const courseInput = document.getElementById('course-input');
     const recommendationForm = document.getElementById('recommendation-form');
     const loadingElement = document.getElementById('loading');
     const recommendationsContainer = document.getElementById('recommendations-container');
@@ -10,61 +10,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const inputCourseElement = document.getElementById('input-course');
     const errorContainer = document.getElementById('error-container');
 
-    // Fetch all courses and populate the dropdown
-    fetchCourses();
-
     // Event listeners
     recommendationForm.addEventListener('submit', getRecommendations);
 
-    /**
-     * Fetch all available courses from the API
-     */
-    function fetchCourses() {
-        showLoading(true);
-        
-        fetch('/api/courses')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch courses');
-                }
-                return response.json();
-            })
-            .then(data => {
-                populateCourseSelect(data.courses);
-                showLoading(false);
-            })
-            .catch(error => {
-                showError(`Error fetching courses: ${error.message}`);
-                showLoading(false);
-            });
-    }
+    // Removed fetchCourses and populateCourseSelect functions as we're using a text input now
 
     /**
-     * Populate the course select dropdown with available courses
-     */
-    function populateCourseSelect(courses) {
-        // Sort courses alphabetically
-        courses.sort();
-        
-        // Add each course as an option
-        courses.forEach(course => {
-            const option = document.createElement('option');
-            option.value = course;
-            option.textContent = course;
-            courseSelect.appendChild(option);
-        });
-    }
-
-    /**
-     * Get recommendations for the selected course
+     * Get recommendations for the entered course
      */
     function getRecommendations(event) {
         event.preventDefault();
         
-        const selectedCourse = courseSelect.value;
+        const enteredCourse = courseInput.value.trim();
         
-        if (!selectedCourse) {
-            showError('Please select a course');
+        if (!enteredCourse) {
+            showError('Please enter a course name');
             return;
         }
         
@@ -74,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showLoading(true);
         
         // Fetch recommendations from API
-        fetch(`/recommend?course=${encodeURIComponent(selectedCourse)}`)
+        fetch(`/recommend?course=${encodeURIComponent(enteredCourse)}`)
             .then(response => {
                 if (!response.ok) {
                     return response.json().then(err => {
@@ -130,13 +90,8 @@ document.addEventListener('DOMContentLoaded', function() {
      * Select a course from the recommendations and get new recommendations
      */
     function selectCourse(course) {
-        // Find and select the course in the dropdown
-        for (let i = 0; i < courseSelect.options.length; i++) {
-            if (courseSelect.options[i].value === course) {
-                courseSelect.selectedIndex = i;
-                break;
-            }
-        }
+        // Set the course input value
+        courseInput.value = course;
         
         // Get recommendations for the selected course
         getRecommendations(new Event('submit'));
