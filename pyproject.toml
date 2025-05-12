@@ -5,7 +5,6 @@ description = "A course recommendation system"
 authors = ["Your Name <your.email@example.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "recommendation_service"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"

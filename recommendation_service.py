@@ -24,20 +24,37 @@ class RecommendationService:
     def _load_model(self, model_path: str) -> Dict[str, Any]:
         """
         Load the recommendation model from a pickle file
-        
+
         Args:
             model_path: Path to the pickle file
-            
+
         Returns:
             Dictionary containing the model data
+
+        Raises:
+            FileNotFoundError: If the file does not exist
+            ValueError: If the loaded model data is invalid
         """
         try:
             with open(model_path, 'rb') as f:
                 model_data = pickle.load(f)
+
+            # Validate model data structure
+            required_keys = ['recommend_courses_cosine', 'course_indices', 'data']
+            for key in required_keys:
+                if key not in model_data:
+                    raise ValueError(f"Missing required key in model data: {key}")
+
             logger.info(f"Model loaded successfully from {model_path}")
             return model_data
+        except FileNotFoundError:
+            logger.error(f"Model file not found: {model_path}")
+            raise
+        except ValueError as ve:
+            logger.error(f"Invalid model data: {ve}")
+            raise
         except Exception as e:
-            logger.error(f"Error loading model from {model_path}: {e}")
+            logger.error(f"Unexpected error loading model from {model_path}: {e}")
             raise
     
     def get_recommendations(self, course_name: str, num_recommendations: int = 3) -> Dict[str, Any]:
