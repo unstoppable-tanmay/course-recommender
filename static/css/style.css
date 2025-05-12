@@ -1,0 +1,36 @@
+/* Additional styles beyond Bootstrap */
+
+body {
+    padding-bottom: 50px;
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#recommendations-list .list-group-item {
+    transition: all 0.2s ease-in-out;
+}
+
+#recommendations-list .list-group-item:hover {
+    transform: translateX(5px);
+    background-color: var(--bs-primary-bg-subtle);
+}
+
+/* Animate the loading spinner */
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+#loading {
+    animation: pulse 1.5s infinite;
+}
+
+/* Custom styling for the select element */
+.form-select:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+}
